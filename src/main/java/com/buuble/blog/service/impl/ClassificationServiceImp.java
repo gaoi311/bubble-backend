@@ -1,7 +1,10 @@
 package com.buuble.blog.service.impl;
 
+import com.buuble.blog.entity.Blog;
 import com.buuble.blog.entity.Classification;
+import com.buuble.blog.repository.BlogRepository;
 import com.buuble.blog.repository.ClassificationRepository;
+import com.buuble.blog.service.BlogtagService;
 import com.buuble.blog.service.ClassificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,9 @@ public class ClassificationServiceImp implements ClassificationService {
 
     @Autowired
     public ClassificationRepository classificationRepository;
+
+    @Autowired
+    BlogRepository blogRepository;
 
     public Classification addClassification(Integer userId, String classificationName) {
         Classification classification = new Classification();
@@ -39,9 +45,15 @@ public class ClassificationServiceImp implements ClassificationService {
         return map;
     }
 
-    public boolean deleteClassification(Integer classificationId) {
+    public boolean deleteClassification(Integer classificationId){
+        Classification classification = classificationRepository.findByUserIdAndClassificationName
+                (classificationRepository.findByClassificationId(classificationId).getUserId(),"默认");
+        int id = classification.getClassificationId();
+        List<Blog> blogs = blogRepository.findByClassificationId(classificationId);
+        for(Blog blog : blogs){
+            blog.setClassificationId(id);
+        }
         classificationRepository.deleteByClassificationId(classificationId);
         return classificationRepository.findByClassificationId(classificationId) == null;
-
     }
 }

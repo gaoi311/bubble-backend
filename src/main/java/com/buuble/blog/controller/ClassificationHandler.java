@@ -32,20 +32,24 @@ public class ClassificationHandler {
     }
 
     @PostMapping("/classification")
-    public Map<String, Object> addClassification(@RequestParam("userId") Integer userId,
-                                                 @RequestParam("classificationName") String classificationName) {
-        Map<String, Object> status = new HashMap<>();
+    public Map<String,Object> addClassification(@RequestParam("userId") Integer userId,
+                                                @RequestParam("classificationName") String classificationName){
+        Map<String,Object> map = new HashMap<>();
+
+        Map<String,Object> status = new HashMap<>();
         Classification classification = classificationService.addClassification(userId, classificationName);
-        if (classification != null) {
-            status.put("code", 200);
-            status.put("msg", "添加成功");
-        } else {
-            status.put("code", 404);
-            status.put("msg", "添加失败");
+        if (classification.getClassificationId()!=null){
+            Map<String,Object> data = new HashMap<>();
+            data.put("classificationId",classification.getClassificationId());
+            map.put("data",data);
+            status.put("code",200);
+            status.put("msg","添加成功");
+        }else {
+            status.put("code",404);
+            status.put("msg","添加失败");
         }
-        Map<String, Object> map1 = new HashMap<>();
-        map1.put("status", status);
-        return map1;
+        map.put("status",status);
+        return map;
     }
 
     @DeleteMapping("/classification/{classificationId}")

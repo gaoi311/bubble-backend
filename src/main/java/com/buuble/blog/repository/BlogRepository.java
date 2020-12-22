@@ -3,6 +3,7 @@ package com.buuble.blog.repository;
 
 import com.buuble.blog.entity.Blog;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -34,4 +35,8 @@ public interface BlogRepository extends JpaRepository<Blog, Integer> {
     List<Blog> findByUserId(Integer userId);
     //从title和BlogContent中查询
     List<Blog> findByTitleLikeOrBlogContentLike(String keyword,String keyword1);
+
+    //从Blog表中查询所有已发布的博客Id
+    @Query(value="select blogId from Blog where isReleased='已发布'")
+    int[] findAllBlogId();
 }

@@ -31,4 +31,6 @@ public interface BlogService {
 
     //按时间倒序获取当前用户最近的博客列表
     Map<String, Object> getRecentBlogs(Integer userId);
+
+    Map<String,Object> getRandomBlogs();
 }

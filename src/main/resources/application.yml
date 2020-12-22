@@ -15,6 +15,10 @@
 server:
   port: 8080   # 应用服务 WEB 访问端口
 
+max-http-header-size: 4048576
+tomcat:
+  max-http-post-size: -1  #请求参数长度
+
 spring:
   application:
     name: blog  # 应用名称
@@ -28,6 +32,11 @@ spring:
     properties:
       hibernate:
         format_sql: true #使看到的sql语句格式化
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 1000MB  #单个文件的最大上限
+      max-request-size: 1000MB #单个请求的文件总大小上限
 
 ###图片上传配置
 upload:

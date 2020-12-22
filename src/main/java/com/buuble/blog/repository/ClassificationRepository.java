@@ -21,4 +21,5 @@ public interface ClassificationRepository extends JpaRepository<Classification, 
 
     Classification findByClassificationId(Integer classificationId);
 
+    Classification findByUserIdAndClassificationName(Integer userId,String classificaion);
 }

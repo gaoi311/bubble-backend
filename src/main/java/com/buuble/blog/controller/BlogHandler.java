@@ -6,6 +6,9 @@ import com.buuble.blog.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.Column;
+import javax.persistence.FetchType;
+import javax.persistence.Lob;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -122,17 +125,18 @@ public class BlogHandler {
 
     @PostMapping("/blog")  //添加博客
     public Map<String, Object> addBlog(@RequestParam("userId") Integer userId,
-                                 //      @RequestParam("blogId") Integer blogId,
+                                       @RequestParam("blogId") Integer blogId,
                                        @RequestParam("blogTags") List<Integer> tagsId,
                                        @RequestParam("blogClassification") Integer classificationId,
                                        @RequestParam("mdContent") String blogContent,
                                        @RequestParam("htmlContent") String blogHtmlContent,
                                        @RequestParam("blogTitle") String title,
                                        @RequestParam("flag") Integer flag) {
+        System.out.println(blogHtmlContent);
 
         Blog blog = new Blog();
         blog.setUserId(userId);
-    //    blog.setBlogId(blogId);
+        blog.setBlogId(blogId);
         blog.setTitle(title);
         blog.setClassificationId(classificationId);
         blog.setBlogContent(blogContent);
@@ -141,7 +145,6 @@ public class BlogHandler {
             blog.setIsReleased("未发布");
         else if (flag == 1)
             blog.setIsReleased("已发布");
-        //  List<Blogtag> blogtags = new ArrayList<>();
         Blog blog1 = blogService.addBlog(blog, tagsId);
         Map<String, Object> status = new HashMap<>();
         if (blog1 != null) {
@@ -156,4 +159,21 @@ public class BlogHandler {
         return map1;
     }
 
+    @GetMapping("/randomblogs")
+    public Map<String,Object> getRandomBlogs(){
+        Map<String,Object> map = blogService.getRandomBlogs();
+        Map<String,Object> status = new HashMap<>();
+        if (map!=null){
+            status.put("code",200);
+            status.put("msg","获取成功");
+            map.put("status",status);
+            return map;
+        }else {
+            status.put("code",404);
+            status.put("msg","获取失败");
+            Map<String,Object> map1 = new HashMap<>();
+            map1.put("status",status);
+            return map1;
+        }
+    }
 }

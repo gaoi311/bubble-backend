@@ -43,7 +43,6 @@ public class BlogServiceImpl implements BlogService {
     BlogtagService blogtagService;
 
     public Blog addBlog(Blog blog, List<Integer> tagIds) {
-        //  blog.setIsReleased("未发布");
         blog.setViews(0);
         Blog blog1 = blogRepository.save(blog);
         List<Blogtag> blogtags = new ArrayList<>();
@@ -55,7 +54,6 @@ public class BlogServiceImpl implements BlogService {
         }
         if (blog1 != null) {
             List<Blogtag> blogtags1 = blogtagRepository.saveAll(blogtags);
-            //       System.out.println(blogtags1);
             return blog;
         } else {
             return null;
@@ -63,13 +61,6 @@ public class BlogServiceImpl implements BlogService {
 
     }
 
-    /*
-        public Blog releaseBlog(Blog blog){
-            blog.setIsReleased("已发布");
-            blog.setViews(0);
-            return blogRepository.save(blog);
-        }
-    */
     public Map<String, Object> showBlog(Integer blogId) {
         Blog blog1 = blogRepository.findByBlogId(blogId);
         if (blog1 != null) {
@@ -90,7 +81,6 @@ public class BlogServiceImpl implements BlogService {
             data1.put("userName", user.getUsername());
             data1.put("userAvatar", user.getPhoto());
 
-//            List<String> blogTags = tagRepository.findTagNameByTagIdIn(blogtagRepository.findTagIdByBlogId(blogId));
             List<Object> blogTags = blogtagService.getTagsByBlogId(blogId);
 
             data2.put("blogTitle", blog.getTitle());
@@ -195,6 +185,40 @@ public class BlogServiceImpl implements BlogService {
     public boolean deleteBlog(Integer blogId) {
         blogRepository.deleteByBlogId(blogId);
         return blogRepository.findByBlogId(blogId) == null;
+    }
+
+    public Map<String, Object> getRandomBlogs() {
+        Map<String, Object> map = new HashMap<>();
+        List<Object> data = new ArrayList<>();
+        int a[] = blogRepository.findAllBlogId();
+        Random random = new Random();
+        Set<Integer> b = new HashSet<>();
+        while (b.size() < 3) {
+            b.add(a[random.nextInt(a.length)]);
+        }
+        for (Integer blogId : b) {
+            Blog blog = blogRepository.findByBlogId(blogId);
+            Map<String, Object> map1 = new HashMap<>();
+            map1.put("blogId", blog.getBlogId());
+            map1.put("blogTitle", blog.getTitle());
+            map1.put("blogCollectionsCount", collectionRepository.countByBlogId(blog.getBlogId()));
+            map1.put("blogViews", blog.getViews());
+            map1.put("blogCommentsCount", commentRepository.countByBlogId(blog.getBlogId()));
+            List<Blogtag> blogtagList = blogtagRepository.findByBlogId(blog.getBlogId());
+            List<Object> blogtags = new ArrayList<>();
+            for (Blogtag blogtag : blogtagList) {
+                Map<String, Object> map2 = new HashMap<>();
+                map2.put("tagId", blogtag.getTagId());
+                map2.put("tagName", tagRepository.findByTagId(blogtag.getTagId()).getTagName());
+                blogtags.add(map2);
+            }
+            map1.put("blogTags", blogtags);
+            map1.put("userId", blog.getUserId());
+            map1.put("userName", userRepository.findByUserId(blog.getUserId()).getUsername());
+            data.add(map1);
+        }
+        map.put("data", data);
+        return map;
     }
 
 }

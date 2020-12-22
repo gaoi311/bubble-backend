@@ -43,11 +43,7 @@ public class PictureHandler {
     @PostMapping("/blogimages")
     public Map<String, Object> addPictures(@RequestParam("pos") MultipartFile[] pos,
                                            @RequestParam("blogId") Integer blogId) {
-//        System.out.println(pos[0].getOriginalFilename());
-//        for(MultipartFile multipartFile : pos){
-//            System.out.println(multipartFile.getOriginalFilename());
-//        }
-        Map<String, Object> map = pictureService.uploadImgs(pos, 19);
+        Map<String, Object> map = pictureService.uploadImgs(pos, blogId);
         for(MultipartFile multipartFile : pos){
             System.out.println(multipartFile.getOriginalFilename());
         }
