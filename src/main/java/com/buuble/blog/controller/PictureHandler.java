@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.PseudoColumnUsage;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,11 +41,16 @@ public class PictureHandler {
     }
     //添加博客图片
     @PostMapping("/blogimages")
-    public Map<String, Object> addPictures(@RequestParam("files") List<MultipartFile> files,
+    public Map<String, Object> addPictures(@RequestParam("pos") MultipartFile[] pos,
                                            @RequestParam("blogId") Integer blogId) {
-
-        Map<String, Object> map = pictureService.uploadImgs(files, blogId);
-
+//        System.out.println(pos[0].getOriginalFilename());
+//        for(MultipartFile multipartFile : pos){
+//            System.out.println(multipartFile.getOriginalFilename());
+//        }
+        Map<String, Object> map = pictureService.uploadImgs(pos, 19);
+        for(MultipartFile multipartFile : pos){
+            System.out.println(multipartFile.getOriginalFilename());
+        }
         Map<String, Object> status = new HashMap<>();
         if (map != null) {
             status.put("code", 200);
@@ -58,6 +64,6 @@ public class PictureHandler {
             map1.put("status", status);
             return map1;
         }
-
+//        return new HashMap<>();
     }
 }

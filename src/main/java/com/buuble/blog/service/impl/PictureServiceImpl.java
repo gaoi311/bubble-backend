@@ -55,7 +55,7 @@ public class PictureServiceImpl implements PictureService {
         return pictureRepository.saveAll(pictures);
     }
 
-    public Map<String, Object> uploadImgs(List<MultipartFile> files, Integer blogId) {
+    public Map<String, Object> uploadImgs(MultipartFile[] files, Integer blogId) {
         UploadUtil uploadUtil = new UploadUtil();
         // MultipartFile file = uploadUtil.getMulFileByPath("C:\\Users\\裴绍展\\新建文件夹\\打包文件/5a5f001eN48800a0d.jpg");
         Map<String, Object> map = new HashMap<>();
@@ -67,11 +67,12 @@ public class PictureServiceImpl implements PictureService {
         }
         if (blogRepository.findByBlogId(blogId) != null) {
             data.put("blogId", blogId);
-            for (int i = 0; i < files.size(); i++) {
+            System.out.println(files.length);
+            for (int i = 0; i < files.length; i++) {
                 List<Object> list = new ArrayList<>();
-                String url = uploadImg(files.get(i));
+                String url = uploadImg(files[i]);
                 list.add(i + 1);
-                list.add(url);
+                list.add("http://localhost:8080" + url);
                 lists.add(list);
                 Picture picture = new Picture();
                 picture.setLocation(i + 1);

@@ -122,7 +122,7 @@ public class BlogHandler {
 
     @PostMapping("/blog")  //添加博客
     public Map<String, Object> addBlog(@RequestParam("userId") Integer userId,
-                                       @RequestParam("blogId") Integer blogId,
+                                 //      @RequestParam("blogId") Integer blogId,
                                        @RequestParam("blogTags") List<Integer> tagsId,
                                        @RequestParam("blogClassification") Integer classificationId,
                                        @RequestParam("mdContent") String blogContent,
@@ -132,7 +132,7 @@ public class BlogHandler {
 
         Blog blog = new Blog();
         blog.setUserId(userId);
-        blog.setBlogId(blogId);
+    //    blog.setBlogId(blogId);
         blog.setTitle(title);
         blog.setClassificationId(classificationId);
         blog.setBlogContent(blogContent);

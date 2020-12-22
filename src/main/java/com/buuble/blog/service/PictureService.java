@@ -16,7 +16,7 @@ public interface PictureService {
     //更新此博客所有图片
     List<Picture> updatePicture(List<Picture> pictures);
 
-    Map<String, Object> uploadImgs(List<MultipartFile> files, Integer blogId);
+    Map<String, Object> uploadImgs(MultipartFile[] files, Integer blogId);
 
     String uploadImg(MultipartFile file);
 }
