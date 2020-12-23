@@ -4,6 +4,7 @@ import com.buuble.blog.service.OtherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -52,8 +53,8 @@ public class OtherHandler {
         }
     }
     //搜索关键字
-    @GetMapping("/searchany/{key}")
-    public Map<String,Object> search(@PathVariable("key") String keyword){
+    @GetMapping("/searchany")
+    public Map<String,Object> search(@RequestParam("key") String keyword){  // 此处改动
         Map<String,Object> map =otherService.search(keyword);
         Map<String,Object> status = new HashMap<>();
         if (map!=null){
