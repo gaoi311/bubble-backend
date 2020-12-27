@@ -19,9 +19,9 @@ public class BlogHandler {
     @Autowired
     private BlogService blogService;
 
-    @GetMapping("/blog/{blogId}")  //获取博客详情
-    public Map<String, Object> getBlog(@PathVariable("blogId") Integer blogId) {
-        Map<String, Object> map = blogService.showBlog(blogId);
+    @PostMapping("/blog/{blogId}")  //获取博客详情
+    public Map<String, Object> getBlog(@PathVariable("blogId") Integer blogId, @RequestParam("userId") Integer userId) {
+        Map<String, Object> map = blogService.showBlog(blogId, userId);
         Map<String, Object> status = new HashMap<>();
         if (map != null) {
             status.put("code", 200);

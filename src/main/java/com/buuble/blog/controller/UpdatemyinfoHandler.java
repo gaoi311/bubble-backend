@@ -22,6 +22,7 @@ public class UpdatemyinfoHandler {
                                             @RequestParam("userPhone") String userPhone,
                                             @RequestParam("userGender") String userGender,
                                             @RequestParam("userBirth") String userBirth) {
+        System.out.println(111);
         Map<String, Object> status = new LinkedHashMap<>();
         Map<String, Object> data = new LinkedHashMap<>();
         Map<String, Object> val = new LinkedHashMap<>();
@@ -96,10 +97,10 @@ public class UpdatemyinfoHandler {
             User user1 = userService.addUser(user);
             if (user1 == null) {
                 code = 404;
-                msg = "用户信息修改失败";
+                msg = "头像上传失败";
             } else {
                 code = 200;
-                msg = "用户信息修改成功";
+                msg = "头像上传成功";
                 data.put("userAvatar",user1.getPhoto());
             }
         }

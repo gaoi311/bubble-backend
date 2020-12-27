@@ -2,6 +2,7 @@ package com.buuble.blog.service.impl;
 
 import com.buuble.blog.config.ImgUploadConfig;
 import com.buuble.blog.entity.*;
+import com.buuble.blog.entity.Collection;
 import com.buuble.blog.repository.*;
 import com.buuble.blog.service.BlogService;
 import com.buuble.blog.service.BlogtagService;
@@ -61,7 +62,7 @@ public class BlogServiceImpl implements BlogService {
 
     }
 
-    public Map<String, Object> showBlog(Integer blogId) {
+    public Map<String, Object> showBlog(Integer blogId,Integer userId) {
         Blog blog1 = blogRepository.findByBlogId(blogId);
         if (blog1 != null) {
             blog1.setViews(blog1.getViews() + 1);
@@ -89,7 +90,14 @@ public class BlogServiceImpl implements BlogService {
             data2.put("blogClassification", classificationRepository.findClassificationNameByClassificationId(blog.getClassificationId()));
             data2.put("blogViews", blog.getViews());
             data2.put("blogCommentsCount", commentRepository.countByBlogId(blogId));
-            data2.put("blogCollectionCount", collectionRepository.countByBlogId(blogId));
+            data2.put("blogCollectionsCount", collectionRepository.countByBlogId(blogId));
+
+            Collection collection = collectionRepository.findByBlogIdAndUserId(blogId,userId);
+            if(collection!=null){
+                data2.put("blogIsCollected",1);
+            }else {
+                data2.put("blogIsCollected",0);
+            }
 
             data.put("user", data1);
             data.put("blog", data2);
@@ -106,7 +114,8 @@ public class BlogServiceImpl implements BlogService {
         List<Object> data = new ArrayList<>();
         for (Classification classification : classificationList) {
             Map<String, Object> map1 = new HashMap<>();
-            map1.put("class", classification.getClassificationName());
+            map1.put("classId", classification.getClassificationId());
+            map1.put("className", classification.getClassificationName());
             List<Object> blogInfo = new ArrayList<>();
             List<Blog> blogList = blogRepository.findByClassificationId(classification.getClassificationId());
             for (Blog blog : blogList) {
@@ -115,7 +124,7 @@ public class BlogServiceImpl implements BlogService {
                 map2.put("blogTitle", blog.getTitle());
                 blogInfo.add(map2);
             }
-            map1.put("blogInfo", blogInfo);
+            map1.put("blogsInfo", blogInfo);
             data.add(map1);
         }
         map.put("data", data);
@@ -193,7 +202,7 @@ public class BlogServiceImpl implements BlogService {
         int a[] = blogRepository.findAllBlogId();
         Random random = new Random();
         Set<Integer> b = new HashSet<>();
-        while (b.size() < 3) {
+        while (b.size() < 10) {
             b.add(a[random.nextInt(a.length)]);
         }
         for (Integer blogId : b) {

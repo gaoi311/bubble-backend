@@ -20,7 +20,7 @@ public interface BlogService {
     boolean deleteBlog(Integer blogId);
 
     //展示某一博客
-    Map<String, Object> showBlog(Integer blogId);
+    Map<String, Object> showBlog(Integer blogId,Integer userId);
 
 
     //查看别人博客列表（只能查看已发布）
