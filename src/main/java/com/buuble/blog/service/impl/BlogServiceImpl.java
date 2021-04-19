@@ -202,7 +202,7 @@ public class BlogServiceImpl implements BlogService {
         int a[] = blogRepository.findAllBlogId();
         Random random = new Random();
         Set<Integer> b = new HashSet<>();
-        while (b.size() < 10) {
+        while (b.size() < 8) {
             b.add(a[random.nextInt(a.length)]);
         }
         for (Integer blogId : b) {

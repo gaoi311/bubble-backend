@@ -161,6 +161,7 @@ public class BlogHandler {
 
     @GetMapping("/randomblogs")
     public Map<String,Object> getRandomBlogs(){
+        System.out.print(123);
         Map<String,Object> map = blogService.getRandomBlogs();
         Map<String,Object> status = new HashMap<>();
         if (map!=null){
